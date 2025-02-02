@@ -3,16 +3,19 @@ const express = require("express");
 const app = express();
 const path = require("path");
 connectToMongo();
-const port = 5000 || process.env.PORT;
-var cors = require("cors");
+
+const port = process.env.PORT || 5000;  // التأكد من قيمة الـ PORT
+const cors = require("cors");
 const assistantRoute = require("./routes/assistant.route");
 const aiMaterialRoute = require("./routes/Other Api/aiMaterial.route");
 
-app.use(cors({
-  origin: process.env.FRONTEND_API_LINK
-}));
+const corsOptions = {
+  origin: process.env.FRONTEND_API_LINK || '*',  // إضافة خيار الفتحة لو مفيش رابط
+};
 
-app.use(express.json()); //to convert request data to json
+app.use(cors(corsOptions));
+
+app.use(express.json());  // لتحويل بيانات الـ request إلى JSON
 
 app.get("/", (req, res) => {
   res.send("Hello 👋 I am Working Fine 🚀");
